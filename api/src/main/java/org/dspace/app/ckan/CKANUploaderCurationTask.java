@@ -82,23 +82,27 @@ public class CKANUploaderCurationTask extends AbstractCurationTask {
     {
 		Context c = Curator.curationContext();
 		BitstreamService bitstreamService = ContentServiceFactory.getInstance().getBitstreamService();
-		
+		log.info("performItem");
 		boolean datasetExist = false;
 		String packageName= StringUtils.replace(item.getHandle(),"/","-");
 		packageName = URLEncoder.encode(packageName);
 		
 		for (Bundle bundle : item.getBundles())
         {
+            log.info("bundle");
             for (Bitstream b : bundle.getBitstreams())
             {
+                log.info("bitstream");
 				String sourceMeta = bitstreamService.getMetadata(b, CKANConstants.CKAN_METADATA_STRING_RESOURCEID);
 				if(StringUtils.isNotBlank(sourceMeta)){
-					// skip already processed bitstreams
+                    // skip already processed bitstreams
+                    log.info("hasMeta <<");
 					continue;
 				}
 				
 				if (b.getFormat() == null || !validFormats.contains(b.getFormat().getShortDescription())) {
-            		// skip unmanaged and unknown formats
+                    // skip unmanaged and unknown formats
+                    log.info("unknown <<");
             		continue;
             	}
 				
